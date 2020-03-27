@@ -10,19 +10,20 @@
 <form action="" method="post">
   <dl>
     <dt>社員ID*</dt>
-      <dd><input type="text" name="id"><br></dd>
+      <dd><input type="text" name="id" placeholder="YZ12345678"><br></dd>
     <dt>社員名*</dt>
-      <dd><input type="text" name="lastname" placeholder="山田">
-    <input type="text" name="firstname" placeholder="太郎"><br></dd>
+      <dd><input type="text" name="lastname" placeholder="姓">
+    <input type="text" name="firstname" placeholder="名"><br></dd>
     <dt>所属セクション*</dt>
     <dd>
       <select name="section">
-        <option>システム開発</option>
-        <option>経理</option>
+        <option>シス開</option>
+        <option>ビジソル</option>
+        <option>サビ開</option>
       </select><br>
     </dd>
     <dt>メールアドレス*</dt>
-      <dd><input type="text" name="mailaddress"><br></dd>
+      <dd><input type="text" name="mailaddress" placeholder="taro_yaz@yaz.co.jp"><br></dd>
     <dt>性別*</dt>
       <dd><input type="radio">男性<input type="radio">女性<br></dd>
       <div class="must">*必須項目</div>
