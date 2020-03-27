@@ -1,0 +1,20 @@
+form dl dt{
+  width: 165px;
+  padding:5px 0;
+  float:left;
+  clear:both;
+}
+
+form dl dd{
+  padding:5px 0;
+}
+
+.button{
+  width: 80px;
+}
+
+.must{
+  font-size:80%;
+  padding:auto;
+  color:red;
+}
