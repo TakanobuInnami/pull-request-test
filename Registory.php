@@ -1,9 +1,22 @@
+<?php //サーバーサイドの入力チェック
+  if (isset($_POST)){
+    $str = mb_strlen($_POST["id"]);
+    if(empty($_POST['id'])){
+      echo "IDは必ず入力してください";
+    }elseif($str > 10){
+      echo "文字数は10文字以内で入力してください";
+    }elseif(!preg_match("/YZ+\d{8}$/i",$_POST["id"])){
+      echo "IDはYZ＋8桁の数字で入力してください";
+    }
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <link rel="stylesheet" href="style.css">
 <head>
 <!--JavaScriptで入力チェック-->
-  <script type="text/javascript">
+  <!-- <script type="text/javascript">
     function check(frm){
       // 必須入力のname属性
       var mustData = Array("id","lastname","firstname","mailaddress","sex");
@@ -56,7 +69,7 @@
       }
         //必須入力項目が全て入力されている場合はtrue返す
         return true;
-    }
+    } -->
   </script>
 <meta charset="UTF-8">
 <title>社員登録画面</title>
@@ -74,9 +87,9 @@
     <dt>所属セクション*</dt>
     <dd>
       <select name="section">
-        <option>シス開</option>
-        <option>ビジソル</option>
-        <option>サビ開</option>
+        <option><span id="1">シス開</span></option>
+        <option><span id="2">ビジソル</span></option>
+        <option><span id="3">サビ開</span></option>
       </select><br>
     </dd>
     <dt>メールアドレス*</dt>
