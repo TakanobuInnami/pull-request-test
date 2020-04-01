@@ -8,8 +8,8 @@
 <body>
 <p>管理メニュー</p>
 <ul>
-<li><a href="">社員登録画面</a> </li>
-<li><a href="">社員一覧画面</a></li>
+<li><a href="http://localhost/Directory/Registory.php">社員登録画面</a> </li>
+<li><a href="http://localhost/Directory/List.php">社員一覧画面</a></li>
 </ul>
 </body>
 </html>
