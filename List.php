@@ -9,7 +9,11 @@
     // 安全なプリペアドステートメントを使う為の準備
     $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     //SQL文
-    $sql = "SELECT * FROM  employee";
+    $sql = "SELECT employee_id,family_name,first_name,
+
+              section_id,mail,gender_id
+
+            FROM employee";
     //プリペアードステートメントの作成
     $stmh = $dbh->prepare($sql);
     //クエリの実行
@@ -17,7 +21,6 @@
   }catch(PDOException $e){
     exit('データベース接続失敗'.$e->getMessage());
   }
-
 ?>
 
 <!DOCTYPE html>
@@ -28,6 +31,7 @@
 <h1>社員一覧画面</h1>
 </head>
 <body>
+<!-- 表の表示部分 -->
 <table border="1">
   <tr>
     <th>社員ID</th>
@@ -36,15 +40,36 @@
     <th>メールアドレス</th>
     <th>性別</th>
   </tr>
+  <!-- データベース取り込み -->
+  <?php
+    while($row = $stmh->fetch(PDO::FETCH_ASSOC)){
+  ?>
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td><a href=""><?php echo htmlspecialchars($row['employee_id'])?></a></td>
+    <td><?=htmlspecialchars($row['family_name'])?> <?=htmlspecialchars($row['first_name'])?></td>
+    <td><?php if(htmlspecialchars($row['section_id'])==1){
+          echo "シス開";
+        }elseif(htmlspecialchars($row['section_id'])==2){
+          echo "ビジソル";
+        }elseif(htmlspecialchars($row['section_id'])==3){
+          echo "サビ開";
+        } ?>
+    </td>
+    <td><?=htmlspecialchars($row['mail'])?></td>
+    <td><?php if(htmlspecialchars($row['gender_id'])==1){
+          echo "男性";
+        }elseif(htmlspecialchars($row['gender_id'])==2){
+          echo "女性";
+        }?>
+    </td>
   </tr>
+  <?php
+    }
+    $pdo = null;
+  ?>
 </table>
 
+<p><a href="http://localhost/Directory/Registory.php">社員登録画面</a></p>
 <p><a href="http://localhost/Directory/Directory.php">メニュー画面</a></p>
 </body>
 </html>
