@@ -1,4 +1,5 @@
 <?php
+session_start();
 //MySQL接続用
   try{$dsn = 'mysql:host=127.0.0.1; dbname=company_directory;charset=utf8mb4';
     $db_user = 'root';
@@ -9,15 +10,12 @@
     // 安全なプリペアドステートメントを使う為の準備
     $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     //SQL文
-    $sql = "SELECT employee_id,family_name,first_name,
-
-              section_id,mail,gender_id
-
-            FROM employee";
+    $sql = "SELECT employee_id,family_name,first_name,section_id,mail,gender_id FROM employee";
     //プリペアードステートメントの作成
     $stmh = $dbh->prepare($sql);
     //クエリの実行
     $stmh->execute();
+
   }catch(PDOException $e){
     exit('データベース接続失敗'.$e->getMessage());
   }
@@ -45,7 +43,7 @@
     while($row = $stmh->fetch(PDO::FETCH_ASSOC)){
   ?>
   <tr>
-    <td><a href=""><?php echo htmlspecialchars($row['employee_id'])?></a></td>
+    <td><a href="edit.php?employee_id=<?php echo $row['employee_id']?>"><?php echo htmlspecialchars($row['employee_id'])?></a></td>
     <td><?=htmlspecialchars($row['family_name'])?> <?=htmlspecialchars($row['first_name'])?></td>
     <td><?php if(htmlspecialchars($row['section_id'])==1){
           echo "シス開";
