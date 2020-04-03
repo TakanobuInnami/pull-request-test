@@ -169,7 +169,7 @@
 <h1>社員登録画面</h1>
 </head>
 <body>
-<?php echo htmlspecialchars($_SESSION['section_id']);?>
+<?php echo htmlspecialchars($_SESSION['gender_id']);?>
 <!-- 入力フォーム開始 -->
 <!-- <form  method="post" action ="http://localhost/Directory/Registory.php" onsubmit="return check(this)"> -->
 <form  method="post" action ="" onsubmit="return check(this)">
@@ -184,15 +184,15 @@
       <select name="section">
         <option value="選択してください">選択してください</option>
         <option value="1" <?php if($_SESSION['section_id'] == 1)echo "selected";?>>シス開</option>
-        <option value="2"<?php if($_SESSION['section_id'] == 2)echo "selected";?>>ビジソル</option>
-        <option value="3"<?php if($_SESSION['section_id'] == 3)echo "selected";?>>サビ開</option>
+        <option value="2" <?php if($_SESSION['section_id'] == 2)echo "selected";?>>ビジソル</option>
+        <option value="3" <?php if($_SESSION['section_id'] == 3)echo "selected";?>>サビ開</option>
       </select><br>
     </dd>
     <dt>メールアドレス*</dt>
       <dd><input type="text" name="mailaddress" value="<?php echo htmlspecialchars($_SESSION['mail'],ENT_QUOTES)?>"><br></dd>
     <dt>性別*</dt>
-      <dd><input type="radio" name="sex" value="1">男性
-      <input type="radio" name="sex" value="2">女性<br></dd>
+      <dd><input type="radio" name="sex" value="1"<?php if($_SESSION['gender_id'] == 1)echo "checked";?>>男性
+      <input type="radio" name="sex" value="2" <?php if($_SESSION['gender_id'] == 2)echo "checked";?>>女性<br></dd>
       <div class="must">*必須項目</div>
   </dl>
   <input type="submit" class="button" value="登録">
