@@ -1,3 +1,4 @@
+<!-- 社員登録画面 -->
 <?php 
   session_start();
   error_reporting(E_ALL & ~E_NOTICE);
@@ -12,61 +13,63 @@
 
     //IDのチェック
     if(empty($_POST['id'])){
-      echo "IDは必ず入力してください<br>";
+      // var_dump("IDは必ず入力してください");
       $err = 1;
     }elseif($id_len > 10){
-      echo "文字数は10文字以内で入力してください<br>";
+      // var_dump("文字数は10文字以内で入力してください");
       $err = 1;
     }elseif(!preg_match("/YZ+\d{8}$/i",$_POST["id"])){
-      echo "IDはYZ＋8桁の数字で入力してください<br>";
+      // var_dump("IDはYZ＋8桁の数字で入力してください");
       $err = 1;
+    }else{
+      $employee_id = $_POST["id"];
     }
     //姓のチェック
     if(empty($_POST['lastname'])){
-      echo "姓は必ず入力してください<br>";
+      // var_dump("姓は必ず入力してください");
       $err = 1;
     }elseif($ln_len > 25){
-      echo "姓は25文字以内で入力してください<br>";
+      // var_dump("姓は25文字以内で入力してください");
       $err = 1;
     }
     //名のチェック
     if(empty($_POST['firstname'])){
-      echo "名は必ず入力してください<br>";
+      // var_dump("名は必ず入力してください");
       $err = 1;
     }elseif($fn_len > 25){
-      echo "名は25文字以内で入力してください<br>";
+      // var_dump("名は25文字以内で入力してください");
       $err = 1;
     }
     //所属セクションのチェック
     if(empty($_POST['section'])){
-      echo "所属セクションは必ず入力してください<br>";
+      // var_dump("所属セクションは必ず入力してください");
       $err = 1;
     }elseif($_POST['section'] != "1" && $_POST['section'] != "2" && $_POST['section'] != "3"){
-      echo "シス開かビジソルかサビ開を選択してください<br>";
+      // var_dump("シス開かビジソルかサビ開を選択してください");
       $err = 1;
     }
     //メールアドレスのチェック
     if(empty($_POST['mailaddress'])){
-      echo "メールアドレスは必ず入力してください<br>";
+      // var_dump("メールアドレスは必ず入力してください");
       $err = 1;
     }elseif($mail_len > 256){
-      echo "文字数は256文字以内で入力してください<br>";
+      // var_dump("文字数は256文字以内で入力してください");
     }elseif(!preg_match("/[!#-9A-~]+@+[a-z0-9]+.+[^.]$/i",$_POST["mailaddress"])){
-      echo "メールアドレスを正しく入力してください<br>";
+      // var_dump("メールアドレスを正しく入力してください");
       $err = 1;
     }else{
       $email = $_POST['mailaddress'];
     }
     //性別のチェック
     if(empty($_POST['sex'])){
-      echo "性別は必ず入力してください<br>";
+      // var_dump("性別は必ず入力してください");
       $err = 1;
     }elseif($_POST['sex'] != "1" && $_POST['sex'] != "2"){
-      echo "男性か女性を選択してください<br>";
+      // var_dump("男性か女性を選択してください");
       $err = 1;
     }
     //エラーなければ社員IDとメールアドレス重複チェック
-    if(empty($err)){echo "test";
+    if(empty($err)){
       $dsn = 'mysql:host=127.0.0.1; dbname=company_directory;charset=utf8mb4';
       $db_user = 'root';
       $db_pass='';
@@ -80,14 +83,19 @@
         PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
       );
       $dbh = new PDO($dsn,$db_user,$db_pass,$options);
-      $query = $dbh->prepare('SELECT * FROM employee WHERE mail = :mail limit 1');
-      $query->execute(array(':mail' => $email));
-      $result = $query->fetch();
-      if($result > 0){
-        echo "このE-mailは既に使用されています";    
+      //メールアドレス重複チェック
+      $query_mail = $dbh->prepare('SELECT * FROM employee WHERE mail = :mail limit 1');
+      $query_mail->execute(array(':mail' => $email));
+      $result_mail = $query_mail->fetch();
+      //社員ID重複チェック
+      $query_id = $dbh->prepare('SELECT * FROM employee WHERE  employee_id = :employee_id limit 1');
+      $query_id->execute(array(':employee_id' => $employee_id));
+      $result_id = $query_id->fetch();
+      if($result_id > 0){
+        echo "この社員IDは既に使用されています";    
       }else{
       $_SESSION['input_data'] = $_POST;
-      // header('Location:join.php');
+      header('Location:join.php');
       exit();
       }
     }
