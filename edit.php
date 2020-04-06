@@ -79,10 +79,6 @@ function disp(){
     location.href = "http://localhost/Directory/delete.php";//削除完了画面へジャンプ
     <?php $_SESSION['delete'] = 1;?>
   }
-  //キャンセル時の処理
-  else{
-    window.alert('キャンセルされました');
-  }
 }
 </script>
 </body>
