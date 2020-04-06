@@ -78,7 +78,6 @@
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         // デフォルトフェッチモードを連想配列形式に設定
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        // バッファードクエリを使う（一度に結果セットを全て取得し、サーバー負荷を軽減）
         // SELECTで得た結果に対してもrowCountメソッドを使えるようにする
         PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
       );
@@ -91,8 +90,10 @@
       $query_id = $dbh->prepare('SELECT * FROM employee WHERE  employee_id = :employee_id limit 1');
       $query_id->execute(array(':employee_id' => $employee_id));
       $result_id = $query_id->fetch();
-      if($result_id > 0){
-        echo "この社員IDは既に使用されています";    
+      if($result_mail > 0){
+        echo "このメールアドレスは既に使用されています";
+      }else if($result_id > 0){
+        echo "この社員IDは既に使用されています";
       }else{
       $_SESSION['input_data'] = $_POST;
       header('Location:join.php');
@@ -112,9 +113,9 @@
   <script type="text/javascript">
     function check(frm){
       // 必須入力のname属性
-      var mustData = Array("id","lastname","firstname","mailaddress","sex");
+      var mustData = Array("id","lastname","firstname","mailaddress","section","sex");
       //アラート表示用
-      var mustName = Array("ID","姓","名","メールアドレス","性別");
+      var mustName = Array("ID","姓","名","メールアドレス","所属セクション","性別");
       //必須入力の数
       var len = mustData.length;
       for(i=0; i<len; i++){
@@ -136,17 +137,25 @@
                 alert("IDはYZ＋8桁の数字で入力してください");
                 return false;
             }
+          //メールアドレス入力チェック
           }else if(mustData[i]=="mailaddress"){
             //メールアドレス正規表現チェック
             var mailData = obj.value;
             var mailSeiki = /[!#-9A-~]+@+[a-z0-9]+.+[^.]$/i;
             if(mailData.match(mailSeiki)){//matchの否定形調べる
             }else{
-                alert("メールアドレスは正しく入力してください");
+                alert("メールアドレスを正しく入力してください");
                 return false;
             }
           }
-
+          //所属セクションの入力チェック
+        }else if(mustData[i]=="section"){
+          document.write("test");
+          if(document.form.section.option[document.form.section.selectIndex].value==""){
+            document.write("test2");
+            alert(mustName[i]+"を入力してください");
+            return false;
+          }
         }else{
           //radioボタンがチェックされているか調べる
           for(var j=0,chk=0;j<obj.length;j++){
@@ -170,17 +179,17 @@
 </head>
 <body>
 <!-- 入力フォーム開始 -->
-<form  method="post" action ="http://localhost/Directory/Registory.php" onsubmit="return check(this)">
+<form  method="post" name="form" action ="http://localhost/Directory/Registory.php" onsubmit="return check(this)">
   <dl>
     <dt>社員ID*</dt>
       <dd><input type="text" name="id" placeholder="YZ12345678" size="10"><br></dd>
     <dt>社員名*</dt>
-      <dd><input type="text" name="lastname" placeholder="姓">
-      <input type="text" name="firstname" placeholder="名"><br></dd>
+      <dd><input type="text" name="lastname" placeholder="社員名（姓）">
+      <input type="text" name="firstname" placeholder="社員名（名）"><br></dd>
     <dt>所属セクション*</dt>
     <dd>
       <select name="section">
-      <option value="選択してください">選択してください</option>
+      <option value="">選択してください</option>
         <option value="1">シス開</option>
         <option value="2">ビジソル</option>
         <option value="3">サビ開</option>
